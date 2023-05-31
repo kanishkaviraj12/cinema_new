@@ -1,4 +1,3 @@
-
 import 'package:cinema_new/User/Billing_information.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,10 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'User/home_page.dart';
-
 class SignupPage extends StatefulWidget {
-   const SignupPage({super.key});
+  const SignupPage({super.key});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -17,12 +14,13 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
 
   // Define variables to store email and password
   String email = '';
   String password = '';
   String fname = '';
+  int tpnumber = 0;
+  String lname = '';
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +50,21 @@ class _SignupPageState extends State<SignupPage> {
                 },
                 decoration: const InputDecoration(
                   labelText: 'Full Name',
+                  prefixIcon: Icon(Icons.person_2_rounded),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    // Store the full name entered by the user
+                    lname = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                  prefixIcon: Icon(Icons.person_2_rounded),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -65,6 +78,21 @@ class _SignupPageState extends State<SignupPage> {
                 },
                 decoration: const InputDecoration(
                   labelText: 'Email',
+                  prefixIcon: Icon(Icons.email_outlined),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    // Store the password entered by the user
+                    tpnumber = int.tryParse(value) ?? 0;
+                  });
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Telephone Number',
+                  prefixIcon: Icon(Icons.call),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -79,6 +107,7 @@ class _SignupPageState extends State<SignupPage> {
                 obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Password',
+                  prefixIcon: Icon(Icons.password_rounded),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -87,13 +116,14 @@ class _SignupPageState extends State<SignupPage> {
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
+                  prefixIcon: Icon(Icons.password_rounded),
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 30.0),
               MaterialButton(
                 onPressed: () {
-                  signUp(email, password, fname);
+                  signUp(email, password, fname, tpnumber.toString(), lname);
                   const billingInformation();
                 },
                 color: Colors.blue,
@@ -130,43 +160,46 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void signUp(String email, String password, String fname) async {
-  try {
-    // Create the user in Firebase Authentication
-    UserCredential userCredential =
-        await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    // User signed up successfully
-    User? user = userCredential.user;
-    if (user != null) {
-      if (kDebugMode) {
-        print('User signed up successfully: ${user.uid}');
-      }
-
-      // Store the user's fname in Firebase Firestore
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      
-      await firestore.collection('users').doc(user.uid).set({
-        'fname': fname,
-      });
-
-      // Navigate to the billing information page
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const billingInformation()),
+  void signUp(String email, String password, String fname, String tpnumber,
+      String lname) async {
+    try {
+      // Create the user in Firebase Authentication
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-    }
-  } catch (e) {
-    // Error occurred during sign-up
-    if (kDebugMode) {
-      print('Sign up error: $e');
+
+      // User signed up successfully
+      User? user = userCredential.user;
+      if (user != null) {
+        if (kDebugMode) {
+          print('User signed up successfully: ${user.uid}');
+        }
+
+        // Store the user's fname in Firebase Firestore
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+        await firestore.collection('users').doc(user.uid).set({
+          'fname': fname,
+          'tpnumber': tpnumber,
+          'lname': lname,
+        });
+
+        // Navigate to the billing information page
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const billingInformation()),
+        );
+      }
+    } catch (e) {
+      // Error occurred during sign-up
+      if (kDebugMode) {
+        print('Sign up error: $e');
+      }
     }
   }
-}
 }
 
 Future<void> main() async {
