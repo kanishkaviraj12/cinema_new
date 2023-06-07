@@ -1,4 +1,5 @@
 
+import 'package:cinema_new/User/profile_page.dart';
 import 'package:cinema_new/User/reservation_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ class _MainPageState extends State<MainPage> {
     CupertinoIcons.shopping_cart,
     Icons.play_arrow,
     Icons.payment_rounded,
+    Icons.payment_rounded,
+    
   ];
   int currentPage = 0;
 
@@ -39,6 +42,8 @@ class _MainPageState extends State<MainPage> {
           return const howManyTickets();
         case 4:
           return const PaymentApp(); // Display the payment page
+        case 5:
+          return ProfilePage(); // Display the payment page
         default:
           return Center(
             child: Text(

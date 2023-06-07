@@ -5,11 +5,9 @@ import '../widgets/category_item.dart';
 import 'consts.dart';
 import 'reservation_page.dart';
 
-
 class DetailPage extends StatefulWidget {
   final Movie movie;
   const DetailPage({super.key, required this.movie});
-
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
@@ -71,28 +69,30 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        CategoryItem(
-                          icon: Icons.videocam_rounded,
-                          category: 'Genre',
-                          categoryValue: widget.movie.genre,
-                        ),
-                        CategoryItem(
-                          icon: Icons.access_time_filled,
-                          category: 'Duration',
-                          categoryValue: formatTime(
-                              Duration(minutes: widget.movie.duration)),
-                        ),
-                        CategoryItem(
-                          icon: Icons.videocam_rounded,
-                          category: 'Rating',
-                          categoryValue: '${widget.movie.rating} / 10',
-                        ),
-                      ],
-                    )
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          CategoryItem(
+                            icon: Icons.videocam_rounded,
+                            category: 'Genre',
+                            categoryValue: widget.movie.genre,
+                          ),
+                          CategoryItem(
+                            icon: Icons.access_time_filled,
+                            category: 'Duration',
+                            categoryValue: formatTime(
+                                Duration(minutes: widget.movie.duration)),
+                          ),
+                          CategoryItem(
+                            icon: Icons.videocam_rounded,
+                            category: 'Rating',
+                            categoryValue: '${widget.movie.rating} / 10',
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -136,9 +136,11 @@ class _DetailPageState extends State<DetailPage> {
                 child: MaterialButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ReservationPage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ReservationPage(),
+                      ),
+                    );
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
@@ -154,9 +156,6 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                   ),
                 ),
-              ),
-              Container(
-                height: 20,
               ),
             ],
           ),
