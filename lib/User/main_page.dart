@@ -8,7 +8,6 @@ import 'Payment/Payment.dart';
 import 'consts.dart';
 import 'home_page.dart';
 import 'how_many_tickets.dart';
-import '../User/reservation_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key); // Fix the constructor
