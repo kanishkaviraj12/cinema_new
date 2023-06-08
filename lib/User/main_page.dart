@@ -8,6 +8,7 @@ import 'Payment/Payment.dart';
 import 'consts.dart';
 import 'home_page.dart';
 import 'how_many_tickets.dart';
+import '../User/reservation_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key); // Fix the constructor
@@ -35,7 +36,7 @@ class _MainPageState extends State<MainPage> {
         case 0:
           return const HomePage();
         case 1:
-          return const ReservationPage();
+          return   ReservationPage();
         case 2:
           return const billingInformation();
         case 3:
@@ -99,3 +100,5 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
+

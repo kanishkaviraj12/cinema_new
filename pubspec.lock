@@ -316,10 +316,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_platform_interface
-      sha256: "1991219d9dbc42a99aff77e663af8ca51ced592cd6685c9485e3458302d3d4f8"
+      sha256: "57e66df4d3850fae4c9e45b3ac4c53cda0e35fe8a833914d3502d2faa0b48597"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.3"
+    version: "2.6.4"
   intl:
     dependency: "direct main"
     description:
@@ -484,10 +484,10 @@ packages:
     dependency: "direct main"
     description:
       name: shared_preferences
-      sha256: "16d3fb6b3692ad244a695c0183fca18cf81fd4b821664394a781de42386bf022"
+      sha256: "396f85b8afc6865182610c0a2fc470853d56499f75f7499e2a73a9f0539d23d0"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   shared_preferences_android:
     dependency: transitive
     description:

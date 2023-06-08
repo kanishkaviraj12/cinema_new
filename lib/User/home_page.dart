@@ -292,3 +292,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
+// const white = Color(0xFFffffff);
+// const black = Color(0xFF1c1c27);
+// const grey = Color(0xFF373741);
+// const orange = Color(0xFFffb43a);
+// const transparent = Colors.transparent;

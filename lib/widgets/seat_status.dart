@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../user/consts.dart';
+import '../User/consts.dart';
+
 
 class SeatStatus extends StatelessWidget {
   final Color color;

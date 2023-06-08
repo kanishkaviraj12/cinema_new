@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../user/consts.dart';
+import '../User/consts.dart';
+
 
 class addmovie extends StatelessWidget {
   const addmovie({super.key});

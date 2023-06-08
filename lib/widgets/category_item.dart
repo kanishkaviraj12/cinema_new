@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../user/consts.dart';
+import '../User/consts.dart';
+
 
 class CategoryItem extends StatelessWidget {
   final IconData icon;
