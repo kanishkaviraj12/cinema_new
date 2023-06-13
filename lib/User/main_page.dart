@@ -1,4 +1,3 @@
-
 import 'package:cinema_new/User/profile_page.dart';
 import 'package:cinema_new/User/reservation_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,8 +22,7 @@ class _MainPageState extends State<MainPage> {
     CupertinoIcons.shopping_cart,
     Icons.play_arrow,
     Icons.payment_rounded,
-    Icons.payment_rounded,
-    
+    Icons.person_rounded
   ];
   int currentPage = 0;
 
@@ -35,9 +33,9 @@ class _MainPageState extends State<MainPage> {
         case 0:
           return const HomePage();
         case 1:
-          return   ReservationPage();
+          return const ReservationPage();
         case 2:
-          return const billingInformation();
+          return BillingInformation();
         case 3:
           return const howManyTickets();
         case 4:
@@ -99,5 +97,3 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-
-

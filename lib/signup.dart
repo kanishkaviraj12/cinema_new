@@ -124,7 +124,7 @@ class _SignupPageState extends State<SignupPage> {
               MaterialButton(
                 onPressed: () {
                   signUp(email, password, fname, tpnumber.toString(), lname);
-                  const billingInformation();
+                  BillingInformation();
                 },
                 color: Colors.blue,
                 textColor: Colors.white,
@@ -190,7 +190,7 @@ class _SignupPageState extends State<SignupPage> {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const billingInformation()),
+          MaterialPageRoute(builder: (context) => BillingInformation()),
         );
       }
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../User/consts.dart';
+
+
 
 
 class addmovie extends StatelessWidget {
@@ -203,7 +204,7 @@ class addmovie extends StatelessWidget {
         child: SizedBox(
           height: MediaQuery.of(context).size.height - 0,
           width: double.infinity,
-          //padding: const EdgeInsets.symmetric(horizontal: 40),
+          //padding: const EdgeInsets.symmetric(hori4zontal: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -348,3 +349,4 @@ class addmovie extends StatelessWidget {
     );
   }
 }
+
