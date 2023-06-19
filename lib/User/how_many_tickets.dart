@@ -1,124 +1,85 @@
+import 'package:cinema_new/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'consts.dart';
 
 class howManyTickets extends StatelessWidget {
-  const howManyTickets({super.key});
+  howManyTickets({Key? key}) : super(key: key);
+
+  final TextEditingController fullTicketsController = TextEditingController();
+  final TextEditingController halfTicketsController = TextEditingController();
+  final TextEditingController totalController = TextEditingController();
+
+  Future<void> addData() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      await firestore.collection('How Many Tickets').doc().set({
+        'Full Tickets': fullTicketsController.text,
+        'Half Tickets': halfTicketsController.text,
+        'Total': totalController.text,
+      });
+      print('Data added successfully.');
+    } catch (e) {
+      print('Error adding data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: black,
-        appBar: AppBar(
-          title: const Text("How Many Tickets"),
-        ),
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height - 0,
-            width: double.infinity,
-            // padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch, // Added this line
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    // Wrapped the inner Column with SingleChildScrollView
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          makeinput(label: "Full Tickets"),
-                          makeinput(label: "Half Tickets"),
-                          makeinput(label: "Total"),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 100),
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 3, left: 3),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: const Border(
-                        bottom: BorderSide(color: Colors.black),
-                        top: BorderSide(color: Colors.black),
-                        left: BorderSide(color: Colors.black),
-                        right: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                    child: MaterialButton(
-                      minWidth: double.infinity,
-                      height: 40,
-                      onPressed: () {},
-                      color: Colors.greenAccent,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: const Text(
-                        "Next",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 100),
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 3, left: 3),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: const Border(
-                        bottom: BorderSide(color: Colors.black),
-                        top: BorderSide(color: Colors.black),
-                        left: BorderSide(color: Colors.black),
-                        right: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                    child: MaterialButton(
-                      minWidth: double.infinity,
-                      height: 40,
-                      onPressed: () {},
-                      color: Colors.greenAccent,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: const Text(
-                        "Back",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 0), // Changed to SizedBox
-              ],
-            ),
+      appBar: AppBar(
+        title: const Text("How Many Tickets"),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              makeInput(
+                label: "Full Tickets",
+                controller: fullTicketsController,
+              ),
+              makeInput(
+                label: "Half Tickets",
+                controller: halfTicketsController,
+              ),
+              makeInput(
+                label: "Total",
+                controller: totalController,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  addData();
+                },
+                child: const Text('Submit'),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
-  Widget makeinput({label, obscureText = false}) {
+  Widget makeInput({
+    required String label,
+    required TextEditingController controller,
+    bool obscureText = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
           style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              color: Color.fromARGB(221, 255, 255, 255)),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(height: 5),
         TextField(
-          style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+          controller: controller,
+          style: const TextStyle(),
           obscureText: obscureText,
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -130,10 +91,15 @@ class howManyTickets extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
       ],
     );
   }
+}
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MaterialApp(
+    home: HomePage(),
+  ));
 }

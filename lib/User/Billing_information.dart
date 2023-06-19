@@ -6,9 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Create a class for the BillingInformation screen
 class BillingInformation extends StatelessWidget {
-  BillingInformation({Key? key}) : super(key: key);
+  BillingInformation({Key? key}) : super(key: key); 
 
   // Create TextEditingController instances for each input field
+  //TextEditingController instances are created for each input field. 
+  //These instances will be used to capture and manage the user input in the corresponding text fields.
   final TextEditingController movieNameController = TextEditingController();
   final TextEditingController customerNameController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
@@ -59,22 +61,12 @@ class BillingInformation extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         // Input fields using the makeInput method with appropriate labels and controllers
-                        makeInput(
-                            label: "Movie Name",
-                            controller: movieNameController),
-                        makeInput(
-                            label: "Customer Name",
-                            controller: customerNameController),
-                        makeInput(
-                            label: "Mobile Number",
-                            controller: mobileNumberController),
+                        makeInput(label: "Movie Name", controller: movieNameController),
+                        makeInput(label: "Customer Name", controller: customerNameController),
+                        makeInput(label: "Mobile Number", controller: mobileNumberController),
                         makeInput(label: "Email", controller: emailController),
-                        makeInput(
-                            label: "Seats Place",
-                            controller: seatsPlaceController),
-                        makeInput(
-                            label: "Seats Number",
-                            controller: seatsNumberController),
+                        makeInput(label: "Seats Place", controller: seatsPlaceController),
+                        makeInput(label: "Seats Number", controller: seatsNumberController),
                       ],
                     ),
                   ),
@@ -96,8 +88,7 @@ class BillingInformation extends StatelessWidget {
                   child: MaterialButton(
                     minWidth: double.infinity,
                     height: 40,
-                    onPressed:
-                        addData, // Call addData function when the button is pressed
+                    onPressed: addData, // Call addData function when the button is pressed
                     color: Colors.greenAccent,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -105,8 +96,7 @@ class BillingInformation extends StatelessWidget {
                     ),
                     child: const Text(
                       "Next",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                     ),
                   ),
                 ),
@@ -135,8 +125,7 @@ class BillingInformation extends StatelessWidget {
                     ),
                     child: const Text(
                       "Back",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                     ),
                   ),
                 ),
@@ -150,10 +139,7 @@ class BillingInformation extends StatelessWidget {
   }
 
   // Method to create input field widgets
-  Widget makeInput(
-      {required String label,
-      required TextEditingController controller,
-      bool obscureText = false}) {
+  Widget makeInput({required String label, required TextEditingController controller, bool obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -167,8 +153,7 @@ class BillingInformation extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         TextField(
-          controller:
-              controller, // Assign the provided controller to the TextField
+          controller: controller, // Assign the provided controller to the TextField
           style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
           obscureText: obscureText,
           decoration: const InputDecoration(

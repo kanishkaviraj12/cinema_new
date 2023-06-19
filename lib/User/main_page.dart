@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
         case 2:
           return BillingInformation();
         case 3:
-          return const howManyTickets();
+          return  howManyTickets();
         case 4:
           return const PaymentApp(); // Display the payment page
         case 5:
