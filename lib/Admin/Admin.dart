@@ -25,7 +25,7 @@ class _AdminState extends State<Admin> {
     Widget body() {
       switch (currentPage) {
         case 0:
-          return const addmovie();
+          return addmovie();
         case 1:
           return const addtheater();
         case 2:
