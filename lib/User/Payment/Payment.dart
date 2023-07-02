@@ -1,4 +1,3 @@
-import 'package:cinema_new/models/model.dart';
 import 'package:flutter/material.dart';
 import '../consts.dart';
 

@@ -22,13 +22,12 @@ class Movie {
   }
 
   factory Movie.fromSnapshot(DocumentSnapshot snapshot) {
-  Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
-  return Movie(
-    id: snapshot.id,
-    title: data?['title'] ?? '',
-    director: data?['director'] ?? '',
-    year: data?['year'] ?? 0,
-  );
-}
-
+    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+    return Movie(
+      id: snapshot.id,
+      title: data?['title'] ?? '',
+      director: data?['director'] ?? '',
+      year: data?['year'] ?? 0,
+    );
+  }
 }
