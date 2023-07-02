@@ -1,8 +1,9 @@
+import 'package:cinema_new/models/model.dart';
 import 'package:flutter/material.dart';
 import '../consts.dart';
 
 class PaymentApp extends StatelessWidget {
-  const PaymentApp({super.key});
+  const PaymentApp();
 
   @override
   Widget build(BuildContext context) {

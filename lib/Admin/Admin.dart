@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../User/consts.dart';
 import 'Add_movie.dart';
 import 'add_theater.dart';
+
 import 'history_of_customer.dart';
 
 class Admin extends StatefulWidget {
@@ -25,7 +26,9 @@ class _AdminState extends State<Admin> {
     Widget body() {
       switch (currentPage) {
         case 0:
-          return addmovie();
+          return MoviesPage(
+           
+          );
         case 1:
           return const addtheater();
         case 2:

@@ -2,6 +2,7 @@ import 'package:cinema_new/User/profile_page.dart';
 import 'package:cinema_new/User/reservation_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../models/model.dart';
 import 'Billing_information.dart';
 import 'Payment/Payment.dart';
 import 'consts.dart';
@@ -37,9 +38,9 @@ class _MainPageState extends State<MainPage> {
         case 2:
           return BillingInformation();
         case 3:
-          return  howManyTickets();
+          return howManyTickets();
         case 4:
-          return const PaymentApp(); // Display the payment page
+          return PaymentApp(); // Display the payment page
         case 5:
           return ProfilePage(); // Display the payment page
         default:

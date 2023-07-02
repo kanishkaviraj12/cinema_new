@@ -38,16 +38,20 @@ dependencies:
 
   flutter_animate: ^4.1.1+1
   intl: ^0.18.1
-  google_fonts: ^4.0.4
-  cached_network_image: ^3.2.3
+  
+  
   firebase_auth: ^4.6.1
   get: ^4.6.5
   cloud_firestore: ^4.8.0
-  image_picker: ^0.8.7+5
+  image_picker: ^1.0.0
   shared_preferences: ^2.1.1
   random_string: ^2.3.1
   firebase_core: ^2.13.1
   firebase_database: ^10.2.3
+  flutter_cache_manager: ^3.3.0
+  cached_network_image: ^3.2.3
+  google_fonts: ^4.0.4
+  
 
 dev_dependencies:
   flutter_test:

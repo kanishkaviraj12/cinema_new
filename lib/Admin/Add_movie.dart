@@ -1,161 +1,251 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../User/consts.dart';
+import '../models/model.dart';
+import 'directpage.dart';
 
-class addmovie extends StatelessWidget {
-  const addmovie({super.key});
+class MoviesPage extends StatefulWidget {
+  @override
+  _MoviesPageState createState() => _MoviesPageState();
+}
+
+class _MoviesPageState extends State<MoviesPage> {
+  late TextEditingController _titleController;
+  late TextEditingController _directorController;
+  late TextEditingController _yearController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController();
+    _directorController = TextEditingController();
+    _yearController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _directorController.dispose();
+    _yearController.dispose();
+    super.dispose();
+  }
+
+  void _createMovie() {
+    final String title = _titleController.text;
+    final String director = _directorController.text;
+    final int year = int.parse(_yearController.text);
+
+    final newMovie = Movie(
+      title: title,
+      director: director,
+      year: year,
+    );
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference moviesCollection = firestore.collection('movies');
+
+    moviesCollection.add(newMovie.toMap()).then((docRef) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Movie created successfully')),
+      );
+      _clearFields();
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to create movie: $error')),
+      );
+    });
+  }
+
+  void _updateMovie() {
+    final String title = _titleController.text;
+    final String director = _directorController.text;
+    final int year = int.parse(_yearController.text);
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference moviesCollection = firestore.collection('movies');
+
+    moviesCollection.where('title', isEqualTo: title).get().then((snapshot) {
+      if (snapshot.size == 1) {
+        final movieDoc = snapshot.docs.first;
+        final updatedMovie = Movie(
+          title: title,
+          director: director,
+          year: year,
+          id: movieDoc.id,
+        );
+
+        movieDoc.reference.update(updatedMovie.toMap()).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Movie updated successfully')),
+          );
+          _clearFields();
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to update movie: $error')),
+          );
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Movie not found')),
+        );
+      }
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update movie: $error')),
+      );
+    });
+  }
+
+  void _deleteMovie() {
+    final String title = _titleController.text;
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference moviesCollection = firestore.collection('movies');
+
+    moviesCollection
+        .where('title', isEqualTo: title)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      if (snapshot.size == 1) {
+        final movieDoc = snapshot.docs.first;
+
+        movieDoc.reference.delete().then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Movie deleted successfully')),
+          );
+          _clearFields();
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to delete movie: $error')),
+          );
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Movie not found')),
+        );
+      }
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete movie: $error')),
+      );
+    });
+  }
+
+  void _clearFields() {
+    _titleController.clear();
+    _directorController.clear();
+    _yearController.clear();
+  }
+
+  void _navigateToMovieDetails(Movie movie) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailsPage(movie: movie),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: black,
       appBar: AppBar(
-        title: const Text("Add Movie"),
+        title: const Text('Movies'),
       ),
       body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height - 0,
-          width: double.infinity,
-          //padding: const EdgeInsets.symmetric(hori4zontal: 40),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          makeinput(label: "Movie Name"),
-                          makeinput(
-                            label: "Language",
-                          ),
-                          makeinput(
-                            label: "Director",
-                          ),
-                          makeinput(
-                            label: "Duration",
-                          ),
-                          makeinput(
-                            label: "Discription",
-                          ),
-                          makeinput(
-                            label: "Payment",
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 100),
-                      child: Container(
-                          padding: const EdgeInsets.only(top: 3, left: 3),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              border: const Border(
-                                bottom: BorderSide(color: Colors.black),
-                                top: BorderSide(color: Colors.black),
-                                left: BorderSide(color: Colors.black),
-                                right: BorderSide(color: Colors.black),
-                              )),
-                          child: MaterialButton(
-                            minWidth: double.infinity,
-                            height: 40,
-                            onPressed: () {},
-                            color: Colors.greenAccent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: const Text(
-                              "Add Movie",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18),
-                            ),
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 100),
-                      child: Container(
-                          padding: const EdgeInsets.only(top: 3, left: 3),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              border: const Border(
-                                bottom: BorderSide(color: Colors.black),
-                                top: BorderSide(color: Colors.black),
-                                left: BorderSide(color: Colors.black),
-                                right: BorderSide(color: Colors.black),
-                              )),
-                          child: MaterialButton(
-                            minWidth: double.infinity,
-                            height: 40,
-                            onPressed: () {},
-                            color: Colors.greenAccent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18),
-                            ),
-                          )),
-                    ),
-                    Container(
-                      height: 0,
-                    ),
-
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: const [
-                    //     Text("Don't have an account?"),
-                    //     Text(
-                    //       "Sign up",
-                    //       style: TextStyle(
-                    //           fontWeight: FontWeight.w600, fontSize: 18),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
+              const Text(
+                'Add Movie',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _directorController,
+                decoration: const InputDecoration(labelText: 'Director'),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _yearController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Year'),
+              ),
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: _createMovie,
+                    child: const Text('Add'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _updateMovie,
+                    child: const Text('Update'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _deleteMovie,
+                    child: const Text('Delete'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32.0),
+              const Text(
+                'Movies List',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              StreamBuilder<QuerySnapshot>(
+                stream:
+                    FirebaseFirestore.instance.collection('movies').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  List<Movie> movies = snapshot.data!.docs
+                      .map((doc) => Movie.fromSnapshot(doc))
+                      .toList();
+
+                  if (movies.isEmpty) {
+                    return const Center(
+                      child: Text('No movies found.'),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: movies.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      Movie movie = movies[index];
+                      return ListTile(
+                        title: Text(movie.title),
+                        subtitle: Text(movie.director),
+                        onTap: () => _navigateToMovieDetails(movie),
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget makeinput({label, obscureText = false}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              color: Color.fromARGB(221, 255, 255, 255)),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        TextField(
-          style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-          obscureText: obscureText,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-      ],
     );
   }
 }
