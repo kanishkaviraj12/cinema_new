@@ -2,7 +2,6 @@ import 'package:cinema_new/User/profile_page.dart';
 import 'package:cinema_new/User/reservation_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../models/model.dart';
 import 'Billing_information.dart';
 import 'Payment/Payment.dart';
 import 'consts.dart';

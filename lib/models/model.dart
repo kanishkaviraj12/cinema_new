@@ -5,12 +5,21 @@ class Movie {
   final String title;
   final String director;
   final int year;
+  final String genre;
+  final String duration;
+  final int rating;
+  final String synopsis;
 
   Movie({
     this.id,
     required this.title,
     required this.director,
     required this.year,
+    //required this.poster,
+    required this.genre,
+    required this.duration,
+    required this.rating,
+    required this.synopsis,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,6 +27,10 @@ class Movie {
       'title': title,
       'director': director,
       'year': year,
+      'genre': genre,
+      'duration': duration,
+      'rating': rating,
+      'synopsis': synopsis,
     };
   }
 
@@ -28,6 +41,10 @@ class Movie {
       title: data?['title'] ?? '',
       director: data?['director'] ?? '',
       year: data?['year'] ?? 0,
+      genre: data?['genre'] ?? '',
+      duration: data?['duration'] ?? '',
+      rating: data?['rating'] ?? 0,
+      synopsis: data?['synopsis'] ?? '',
     );
   }
 }

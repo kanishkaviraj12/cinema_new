@@ -11,26 +11,35 @@ class MovieDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Movie Details'),
+        title: const Text('Movie Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Movie Details',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Text('Title: ${movie.title}'),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text('Director: ${movie.director}'),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text('Year: ${movie.year}'),
+            const SizedBox(height: 8.0),
+            Text('genre:${movie.genre}'),
+            const SizedBox(height: 8.0),
+            Text('duration:${movie.duration}'),
+            const SizedBox(height: 8.0),
+            Text('rating:${movie.rating}'),
+            const SizedBox(height: 8.0),
+            Text('synopsis:${movie.synopsis}'),
+
           ],
         ),
       ),

@@ -12,6 +12,10 @@ class _MoviesPageState extends State<MoviesPage> {
   late TextEditingController _titleController;
   late TextEditingController _directorController;
   late TextEditingController _yearController;
+  late TextEditingController _genreController;
+  late TextEditingController _durationController;
+  late TextEditingController _ratingController;
+  late TextEditingController _synopsisController;
 
   @override
   void initState() {
@@ -19,6 +23,10 @@ class _MoviesPageState extends State<MoviesPage> {
     _titleController = TextEditingController();
     _directorController = TextEditingController();
     _yearController = TextEditingController();
+    _genreController = TextEditingController();
+    _durationController = TextEditingController();
+    _ratingController = TextEditingController();
+    _synopsisController = TextEditingController();
   }
 
   @override
@@ -26,6 +34,10 @@ class _MoviesPageState extends State<MoviesPage> {
     _titleController.dispose();
     _directorController.dispose();
     _yearController.dispose();
+    _genreController.dispose();
+    _durationController.dispose();
+    _ratingController.dispose();
+    _synopsisController.dispose();
     super.dispose();
   }
 
@@ -33,11 +45,19 @@ class _MoviesPageState extends State<MoviesPage> {
     final String title = _titleController.text;
     final String director = _directorController.text;
     final int year = int.parse(_yearController.text);
+    final String genre = _genreController.text;
+    final String duration = _durationController.text;
+    final int rating = int.parse(_ratingController.text);
+    final String synopsis = _synopsisController.text;
 
     final newMovie = Movie(
       title: title,
       director: director,
       year: year,
+      genre: genre,
+      duration: duration,
+      rating: rating,
+      synopsis: synopsis,
     );
 
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -59,6 +79,10 @@ class _MoviesPageState extends State<MoviesPage> {
     final String title = _titleController.text;
     final String director = _directorController.text;
     final int year = int.parse(_yearController.text);
+    final String genre = _genreController.text;
+    final String duration = _directorController.text;
+    final int rating = int.parse(_ratingController.text);
+    final String synopsis = _synopsisController.text;
 
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference moviesCollection = firestore.collection('movies');
@@ -71,6 +95,10 @@ class _MoviesPageState extends State<MoviesPage> {
           director: director,
           year: year,
           id: movieDoc.id,
+          genre: genre,
+          duration: duration,
+          rating: rating,
+          synopsis: synopsis,
         );
 
         movieDoc.reference.update(updatedMovie.toMap()).then((_) {
@@ -134,6 +162,10 @@ class _MoviesPageState extends State<MoviesPage> {
     _titleController.clear();
     _directorController.clear();
     _yearController.clear();
+    _genreController.clear();
+    _durationController.clear();
+    _ratingController.clear();
+    _synopsisController.clear();
   }
 
   void _navigateToMovieDetails(Movie movie) {
@@ -181,6 +213,28 @@ class _MoviesPageState extends State<MoviesPage> {
                 decoration: const InputDecoration(labelText: 'Year'),
               ),
               const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _genreController,
+                decoration: const InputDecoration(labelText: 'Genre'),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _durationController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Duration'),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _ratingController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Rating'),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _synopsisController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Synopsis'),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
