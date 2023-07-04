@@ -5,8 +5,6 @@ import '../models/movie_model.dart';
 import '../widgets/category_item.dart';
 import 'reservation_page.dart';
 
-
-
 class DetailPage extends StatefulWidget {
   final Movie movie;
   const DetailPage({super.key, required this.movie});
@@ -140,7 +138,7 @@ class _DetailPageState extends State<DetailPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ReservationPage(),
+                        builder: (context) => const ReservationPage(),
                       ),
                     );
                   },
@@ -166,9 +164,3 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 }
-
-// const white = Color(0xFFffffff);
-// const black = Color(0xFF1c1c27);
-// const grey = Color(0xFF373741);
-// const orange = Color(0xFFffb43a);
-// const transparent = Colors.transparent;

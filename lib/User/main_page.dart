@@ -39,9 +39,9 @@ class _MainPageState extends State<MainPage> {
         case 3:
           return howManyTickets();
         case 4:
-          return PaymentApp(); // Display the payment page
+          return const PaymentApp(); // Display the payment page
         case 5:
-          return ProfilePage(); // Display the payment page
+          return const ProfilePage(); // Display the payment page
         default:
           return Center(
             child: Text(

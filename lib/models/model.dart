@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Movie {
   final String? id;
+  final String search;
   final String title;
   final String director;
   final int year;
@@ -12,6 +13,7 @@ class Movie {
 
   Movie({
     this.id,
+    required this.search,
     required this.title,
     required this.director,
     required this.year,
@@ -31,6 +33,7 @@ class Movie {
       'duration': duration,
       'rating': rating,
       'synopsis': synopsis,
+      'search':search,
     };
   }
 
@@ -45,6 +48,7 @@ class Movie {
       duration: data?['duration'] ?? '',
       rating: data?['rating'] ?? 0,
       synopsis: data?['synopsis'] ?? '',
+      search: data?['search'] ?? '',
     );
   }
 }

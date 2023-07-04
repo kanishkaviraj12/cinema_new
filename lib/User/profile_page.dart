@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -85,70 +87,70 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         actions: [
           IconButton(
             onPressed: () {
               // TODO: Implement logout functionality
             },
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             CircleAvatar(
               radius: 60.0,
               backgroundImage: imageUrl.isNotEmpty
                   ? FileImage(File(imageUrl)) as ImageProvider<Object>?
-                  : NetworkImage(
+                  : const NetworkImage(
                       'https://firebasestorage.googleapis.com/v0/b/popcornauth-ac9bf.appspot.com/o/uploads%2FIMG_20220407_002740.jpg?alt=media&token=d8e7265a-d69c-43da-b4b3-1f686c1810e9'),
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: _pickImage,
-              child: Text('Change Image'),
+              child: const Text('Change Image'),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Name: $name'),
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: _editProfile,
                 ),
               ],
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Email: $email'),
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: _editProfile,
                 ),
               ],
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Card(
-              margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Booking History',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: bookingHistory.length,
@@ -161,20 +163,20 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Card(
-              margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Favourite Movies',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: favouriteMovies.length,
@@ -187,20 +189,20 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Card(
-              margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Payment Information',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: paymentInformation.length,
@@ -212,25 +214,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
                 // TODO: Implement preferences and settings functionality
               },
-              child: Text('Preferences and Settings'),
+              child: const Text('Preferences and Settings'),
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () {
                 // TODO: Implement help and support functionality
               },
-              child: Text('Help and Support'),
+              child: const Text('Help and Support'),
             ),
-            SizedBox(height: 20.0),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
+            const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: _deleteAccount,
-              child: Text('Delete Account'),
+              child: const Text('Delete Account'),
             ),
           ],
         ),
@@ -243,7 +245,7 @@ class EditProfilePopup extends StatefulWidget {
   final String name;
   final String email;
 
-  EditProfilePopup({required this.name, required this.email});
+  const EditProfilePopup({super.key, required this.name, required this.email});
 
   @override
   _EditProfilePopupState createState() => _EditProfilePopupState();
@@ -282,17 +284,17 @@ class _EditProfilePopupState extends State<EditProfilePopup> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Edit Profile'),
+      title: const Text('Edit Profile'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
             controller: _nameController,
-            decoration: InputDecoration(labelText: 'Name'),
+            decoration: const InputDecoration(labelText: 'Name'),
           ),
           TextField(
             controller: _emailController,
-            decoration: InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: 'Email'),
           ),
         ],
       ),
@@ -301,11 +303,11 @@ class _EditProfilePopupState extends State<EditProfilePopup> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: _saveChanges,
-          child: Text('Save'),
+          child: const Text('Save'),
         ),
       ],
     );

@@ -5,7 +5,7 @@ import '../models/model.dart';
 class MovieDetailsPage extends StatelessWidget {
   final Movie movie;
 
-  const MovieDetailsPage({required this.movie});
+  const MovieDetailsPage({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,8 @@ class MovieDetailsPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 8.0),
+            Text('search:${movie.search}'),
             const SizedBox(height: 16.0),
             Text('Title: ${movie.title}'),
             const SizedBox(height: 8.0),
@@ -39,6 +41,7 @@ class MovieDetailsPage extends StatelessWidget {
             Text('rating:${movie.rating}'),
             const SizedBox(height: 8.0),
             Text('synopsis:${movie.synopsis}'),
+            
 
           ],
         ),

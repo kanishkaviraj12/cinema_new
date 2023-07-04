@@ -4,11 +4,14 @@ import '../models/model.dart';
 import 'directpage.dart';
 
 class MoviesPage extends StatefulWidget {
+  const MoviesPage({super.key});
+
   @override
   _MoviesPageState createState() => _MoviesPageState();
 }
 
 class _MoviesPageState extends State<MoviesPage> {
+  late TextEditingController _searchController;
   late TextEditingController _titleController;
   late TextEditingController _directorController;
   late TextEditingController _yearController;
@@ -20,6 +23,7 @@ class _MoviesPageState extends State<MoviesPage> {
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
     _titleController = TextEditingController();
     _directorController = TextEditingController();
     _yearController = TextEditingController();
@@ -31,6 +35,7 @@ class _MoviesPageState extends State<MoviesPage> {
 
   @override
   void dispose() {
+    _searchController.dispose();
     _titleController.dispose();
     _directorController.dispose();
     _yearController.dispose();
@@ -42,6 +47,7 @@ class _MoviesPageState extends State<MoviesPage> {
   }
 
   void _createMovie() {
+    final String search = _searchController.text;
     final String title = _titleController.text;
     final String director = _directorController.text;
     final int year = int.parse(_yearController.text);
@@ -51,6 +57,7 @@ class _MoviesPageState extends State<MoviesPage> {
     final String synopsis = _synopsisController.text;
 
     final newMovie = Movie(
+      search: search,
       title: title,
       director: director,
       year: year,
@@ -76,6 +83,7 @@ class _MoviesPageState extends State<MoviesPage> {
   }
 
   void _updateMovie() {
+    final String search = _searchController.text;
     final String title = _titleController.text;
     final String director = _directorController.text;
     final int year = int.parse(_yearController.text);
@@ -87,10 +95,11 @@ class _MoviesPageState extends State<MoviesPage> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference moviesCollection = firestore.collection('movies');
 
-    moviesCollection.where('title', isEqualTo: title).get().then((snapshot) {
+    moviesCollection.where('search', isEqualTo: search).get().then((snapshot) {
       if (snapshot.size == 1) {
         final movieDoc = snapshot.docs.first;
         final updatedMovie = Movie(
+          search: search,
           title: title,
           director: director,
           year: year,
@@ -124,21 +133,20 @@ class _MoviesPageState extends State<MoviesPage> {
   }
 
   void _deleteMovie() {
-    final String title = _titleController.text;
+    final String search = _searchController.text;
 
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference moviesCollection = firestore.collection('movies');
 
     moviesCollection
-        .where('title', isEqualTo: title)
-        .get()
-        .then((QuerySnapshot snapshot) {
+        .where('search', isEqualTo: search ).get().then((QuerySnapshot snapshot) {
+          
       if (snapshot.size == 1) {
         final movieDoc = snapshot.docs.first;
 
         movieDoc.reference.delete().then((_) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Movie deleted successfully')),
+            const SnackBar(content: Text('Movie deleted successfully')),
           );
           _clearFields();
         }).catchError((error) {
@@ -148,7 +156,7 @@ class _MoviesPageState extends State<MoviesPage> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Movie not found')),
+          const SnackBar(content: Text('Movie not found')),
         );
       }
     }).catchError((error) {
@@ -159,6 +167,7 @@ class _MoviesPageState extends State<MoviesPage> {
   }
 
   void _clearFields() {
+    _searchController.clear();
     _titleController.clear();
     _directorController.clear();
     _yearController.clear();
@@ -195,6 +204,11 @@ class _MoviesPageState extends State<MoviesPage> {
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _searchController,
+                decoration: const InputDecoration(labelText: 'search'),
               ),
               const SizedBox(height: 16.0),
               TextFormField(

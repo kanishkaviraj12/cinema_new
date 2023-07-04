@@ -1,3 +1,4 @@
+import 'package:cinema_new/Admin/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../User/consts.dart';
@@ -18,7 +19,8 @@ class _AdminState extends State<Admin> {
     Icons.movie,
     CupertinoIcons.building_2_fill,
     CupertinoIcons.arrow_counterclockwise_circle,
-    Icons.person_rounded
+    Icons.person_rounded,
+    Icons.person_2
   ];
   int currentPage = 0;
   @override
@@ -26,7 +28,7 @@ class _AdminState extends State<Admin> {
     Widget body() {
       switch (currentPage) {
         case 0:
-          return MoviesPage(
+          return const MoviesPage(
            
           );
         case 1:
@@ -40,6 +42,8 @@ class _AdminState extends State<Admin> {
               style: font.copyWith(fontSize: 32, color: white),
             ),
           );
+        case 4:
+          //return MyApp();
         default:
           return Center(
               child: Text(

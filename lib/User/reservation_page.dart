@@ -156,9 +156,9 @@ class _ReservationPageState extends State<ReservationPage> {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    Row(
+                    const Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         SeatStatus(
                           color: grey,
                           status: 'Available',
@@ -356,7 +356,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                               ),
                                               const SizedBox(height: 10),
                                               Text(
-                                                '\LKR ${(selectedSeats.length * 450.00).toStringAsFixed(2)}',
+                                                'LKR ${(selectedSeats.length * 450.00).toStringAsFixed(2)}',
                                                 style: font.copyWith(
                                                     color: white,
                                                     fontSize: 20,

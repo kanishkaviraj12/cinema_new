@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         const Text("Don't have an account?"),
                         GestureDetector(
                           onTap: () {
-                            SignupPage();
+                            const SignupPage();
                           },
                           child: const Text(
                             "Sign up",
