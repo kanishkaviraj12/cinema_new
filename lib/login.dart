@@ -7,7 +7,10 @@ import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRejisterPage;
-  const LoginPage({super.key, required this.showRejisterPage, required Null Function() SignupPage});
+  const LoginPage(
+      {super.key,
+      required this.showRejisterPage,
+      required Null Function() SignupPage});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
