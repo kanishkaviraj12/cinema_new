@@ -1,4 +1,3 @@
-import 'package:cinema_new/Admin/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../User/consts.dart';
@@ -28,9 +27,7 @@ class _AdminState extends State<Admin> {
     Widget body() {
       switch (currentPage) {
         case 0:
-          return const MoviesPage(
-           
-          );
+          return const MoviesPage();
         case 1:
           return const addtheater();
         case 2:
@@ -43,7 +40,7 @@ class _AdminState extends State<Admin> {
             ),
           );
         case 4:
-          //return MyApp();
+        //return MyApp();
         default:
           return Center(
               child: Text(

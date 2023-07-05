@@ -18,7 +18,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<IconData> bottomIcons = [
     Icons.home_filled,
-    CupertinoIcons.ticket_fill,
+    
     CupertinoIcons.shopping_cart,
     Icons.play_arrow,
     Icons.payment_rounded,
@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
         case 0:
           return const HomePage();
         case 1:
-          return const ReservationPage();
+          
         case 2:
           return BillingInformation();
         case 3:

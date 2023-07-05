@@ -8,7 +8,7 @@ import '../models/model.dart';
 class FirebaseDataScreen extends StatefulWidget {
   final List<Movie> movies;
 
-  FirebaseDataScreen({required this.movies});
+  const FirebaseDataScreen({super.key, required this.movies});
 
   @override
   _FirebaseDataScreenState createState() => _FirebaseDataScreenState();
