@@ -1,10 +1,8 @@
-
 import 'package:cinema_new/firebase_options.dart';
 import 'package:cinema_new/login.dart';
 import 'package:cinema_new/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +33,7 @@ class HomePage extends StatelessWidget {
                     Text(
                       "WelCome",
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                     ),
                     SizedBox(
                       height: 20,
@@ -62,9 +60,9 @@ class HomePage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => LoginPage(
-                                  SignupPage: () {},
-                                  showRejisterPage: () {},
-                                )));
+                                      SignupPage: () {},
+                                      showRejisterPage: () {},
+                                    )));
                       },
                       shape: RoundedRectangleBorder(
                           side: const BorderSide(color: Colors.black),
@@ -95,7 +93,7 @@ class HomePage extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>  const SignupPage()));
+                                    builder: (context) => const SignupPage()));
                           },
                           color: Colors.yellow,
                           elevation: 0,

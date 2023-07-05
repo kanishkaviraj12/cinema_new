@@ -16,14 +16,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<IconData> bottomIcons = [
-    Icons.home_filled,
-    
-    CupertinoIcons.shopping_cart,
-    Icons.play_arrow,
-    Icons.payment_rounded,
-    Icons.person_rounded
-  ];
+  List<IconData> bottomIcons = [Icons.home_filled, Icons.person_rounded];
   int currentPage = 0;
 
   @override
@@ -33,13 +26,9 @@ class _MainPageState extends State<MainPage> {
         case 0:
           return const HomePage();
         case 1:
-          
         case 2:
-          return BillingInformation();
         case 3:
-          return howManyTickets();
         case 4:
-          return const PaymentApp(); // Display the payment page
         case 5:
           return const ProfilePage(); // Display the payment page
         default:

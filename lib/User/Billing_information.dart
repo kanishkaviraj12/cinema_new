@@ -1,16 +1,11 @@
-// Import necessary packages
-import 'package:cinema_new/main.dart';
+import 'package:cinema_new/User/how_many_tickets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Create a class for the BillingInformation screen
 class BillingInformation extends StatelessWidget {
-  BillingInformation({Key? key}) : super(key: key); 
+  BillingInformation({Key? key}) : super(key: key);
 
-  // Create TextEditingController instances for each input field
-  //TextEditingController instances are created for each input field. 
-  //These instances will be used to capture and manage the user input in the corresponding text fields.
   final TextEditingController movieNameController = TextEditingController();
   final TextEditingController customerNameController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
@@ -18,24 +13,70 @@ class BillingInformation extends StatelessWidget {
   final TextEditingController seatsPlaceController = TextEditingController();
   final TextEditingController seatsNumberController = TextEditingController();
 
-  // Function to add data to Firestore collection
-  Future<void> addData() async {
+  Future<void> addData(BuildContext context) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
-      // Add data to the 'Billing information' collection
       await firestore.collection('Billing information').doc().set({
         'Movie Name': movieNameController.text,
         'Customer Name': customerNameController.text,
-        'Mobile Number': mobileNumberController.text,
+        'Mobile Number': int.tryParse(mobileNumberController.text) ?? 0,
         'Email': emailController.text,
         'Seats Place': seatsPlaceController.text,
-        'Seats Number': seatsNumberController.text,
+        // 'Seats Number': seatsNumberController.text,
       });
       print('Data added successfully.');
+
+      // Perform user validation
+      if (validateUser()) {
+        // Navigate to the next page if user is valid
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HowManyTickets()),
+        );
+      } else {
+        // Show an error message if user is not valid
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Invalid User'),
+              content: const Text('Please enter valid user information.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     } catch (e) {
       print('Error adding data: $e');
     }
+  }
+
+  bool validateUser() {
+    // Perform validation logic here
+    // Return true if the user is valid, otherwise return false
+    final String email = emailController.text.trim();
+    final String mobileNumber = mobileNumberController.text.trim();
+
+    return validateEmail(email) && validateMobileNumber(mobileNumber);
+  }
+
+  bool validateEmail(String email) {
+    final RegExp emailRegex =
+        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  bool validateMobileNumber(String mobileNumber) {
+    final RegExp mobileNumberRegex = RegExp(r'^[0-9]{10}$');
+    return mobileNumberRegex.hasMatch(mobileNumber);
   }
 
   @override
@@ -47,90 +88,67 @@ class BillingInformation extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - 0,
+          height: MediaQuery.of(context).size.height -
+              MediaQuery.of(context).padding.top -
+              AppBar().preferredSize.height,
           width: double.infinity,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // Input fields using the makeInput method with appropriate labels and controllers
-                        makeInput(label: "Movie Name", controller: movieNameController),
-                        makeInput(label: "Customer Name", controller: customerNameController),
-                        makeInput(label: "Mobile Number", controller: mobileNumberController),
-                        makeInput(label: "Email", controller: emailController),
-                        makeInput(label: "Seats Place", controller: seatsPlaceController),
-                        makeInput(label: "Seats Number", controller: seatsNumberController),
-                      ],
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      makeInput(
+                        label: "Movie Name",
+                        controller: movieNameController,
+                      ),
+                      makeInput(
+                        label: "Customer Name",
+                        controller: customerNameController,
+                      ),
+                      makeInput(
+                        label: "Mobile Number",
+                        controller: mobileNumberController,
+                      ),
+                      makeInput(
+                        label: "Email",
+                        controller: emailController,
+                      ),
+                      makeInput(
+                        label: "Seats Place",
+                        controller: seatsPlaceController,
+                       ),
+                      // makeInput(
+                      //   label: "Seats Number",
+                      //   controller: seatsNumberController,
+                      // ),
+                    ],
                   ),
                 ),
               ),
+              SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: const Border(
-                      bottom: BorderSide(color: Colors.black),
-                      top: BorderSide(color: Colors.black),
-                      left: BorderSide(color: Colors.black),
-                      right: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  child: MaterialButton(
-                    minWidth: double.infinity,
-                    height: 40,
-                    onPressed: addData, // Call addData function when the button is pressed
-                    color: Colors.greenAccent,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: ElevatedButton(
+                  onPressed: () => addData(context),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.greenAccent,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: const Text(
-                      "Next",
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text(
+                    "Next",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: const Border(
-                      bottom: BorderSide(color: Colors.black),
-                      top: BorderSide(color: Colors.black),
-                      left: BorderSide(color: Colors.black),
-                      right: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  child: MaterialButton(
-                    minWidth: double.infinity,
-                    height: 40,
-                    onPressed: () {},
-                    color: Colors.greenAccent,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Text(
-                      "Back",
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 0),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -138,8 +156,11 @@ class BillingInformation extends StatelessWidget {
     );
   }
 
-  // Method to create input field widgets
-  Widget makeInput({required String label, required TextEditingController controller, bool obscureText = false}) {
+  Widget makeInput({
+    required String label,
+    required TextEditingController controller,
+    bool obscureText = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -148,35 +169,36 @@ class BillingInformation extends StatelessWidget {
           style: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w400,
-            color: Color.fromARGB(221, 255, 255, 255),
+            color: Colors.white,
           ),
         ),
         const SizedBox(height: 5),
         TextField(
-          controller: controller, // Assign the provided controller to the TextField
-          style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+          controller: controller,
+          style: const TextStyle(color: Colors.white),
           obscureText: obscureText,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          keyboardType: label == 'Mobile Number'
+              ? TextInputType.number
+              : TextInputType.text,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[900],
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: const BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(10),
             ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.greenAccent),
+              borderRadius: BorderRadius.circular(10),
             ),
+            hintText: label,
+            hintStyle: const TextStyle(color: Colors.grey),
           ),
         ),
         const SizedBox(height: 10),
       ],
     );
   }
-}
-
-// Main function to run the Flutter app
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
-  runApp(const MaterialApp(
-    home: HomePage(), // Set BillingInformation as the home screen
-  ));
 }
