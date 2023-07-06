@@ -1,4 +1,4 @@
-import 'package:cinema_new/User/Billing_information.dart';
+import 'package:cinema_new/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -14,6 +14,8 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   // Define variables to store email and password
   String email = '';
@@ -23,8 +25,15 @@ class _SignupPageState extends State<SignupPage> {
   String lname = '';
 
   @override
+  void dispose() {
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
@@ -86,7 +95,7 @@ class _SignupPageState extends State<SignupPage> {
               TextField(
                 onChanged: (value) {
                   setState(() {
-                    // Store the password entered by the user
+                    // Store the telephone number entered by the user
                     tpnumber = int.tryParse(value) ?? 0;
                   });
                 },
@@ -112,19 +121,27 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               const SizedBox(height: 20.0),
-              const TextField(
+              TextField(
+                controller: confirmPasswordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Confirm Password',
                   prefixIcon: Icon(Icons.password_rounded),
-                  border: OutlineInputBorder(),
+                 border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 30.0),
               MaterialButton(
                 onPressed: () {
-                  signUp(email, password, fname, tpnumber.toString(), lname);
-                  BillingInformation();
+                  if (validateForm(context)) {
+                    signUp(
+                      email,
+                      password,
+                      fname,
+                      tpnumber.toString(),
+                      lname,
+                    );
+                  }
                 },
                 color: Colors.blue,
                 textColor: Colors.white,
@@ -160,6 +177,45 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
+  bool validateForm(BuildContext context) {
+    if (fname.isEmpty ||
+        lname.isEmpty ||
+        email.isEmpty ||
+        tpnumber.toString().length != 10 ||
+        !email.contains('@') ||
+        !email.endsWith('.com') ||
+        password.length < 6 ||
+        password != confirmPasswordController.text) {
+      String errorMessage = '';
+      if (fname.isEmpty) {
+        errorMessage += 'Full Name is required.\n';
+      }
+      if (lname.isEmpty) {
+        errorMessage += 'Last Name is required.\n';
+      }
+      if (email.isEmpty) {
+        errorMessage += 'Email is required.\n';
+      } else if (!email.contains('@') || !email.endsWith('.com')) {
+        errorMessage += 'Invalid email format.\n';
+      }
+      if (tpnumber.toString().length != 10) {
+        errorMessage += 'Telephone Number should have 10 digits.\n';
+      }
+      if (password.length < 6) {
+        errorMessage += 'Password must be at least 6 characters.\n';
+      }
+      if (password != confirmPasswordController.text) {
+        errorMessage += 'Passwords do not match.\n';
+      }
+      final snackBar = SnackBar(
+        content: Text(errorMessage),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return false;
+    }
+    return true;
+  }
+
   void signUp(String email, String password, String fname, String tpnumber,
       String lname) async {
     try {
@@ -190,7 +246,13 @@ class _SignupPageState extends State<SignupPage> {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BillingInformation()),
+          MaterialPageRoute(
+            builder: (context) => LoginPage(
+              SignupPage: () {},
+              showRegisterPage: () {},
+              showRejisterPage: () {},
+            ),
+          ),
         );
       }
     } catch (e) {
@@ -202,9 +264,3 @@ class _SignupPageState extends State<SignupPage> {
   }
 }
 
-Future<void> main() async {
-  await Firebase.initializeApp();
-  runApp(const MaterialApp(
-    home: SignupPage(),
-  ));
-}

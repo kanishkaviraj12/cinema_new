@@ -1,22 +1,87 @@
-//ignore_for_file: deprecated_member_use
 import 'package:cinema_new/Admin/Admin.dart';
 import 'package:cinema_new/User/main_page.dart';
-import 'package:cinema_new/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class LoginPage extends StatefulWidget {
-  final VoidCallback showRejisterPage;
-  const LoginPage(
-      {super.key,
-      required this.showRejisterPage,
-      required Null Function() SignupPage});
+  final VoidCallback showRegisterPage;
+
+  const LoginPage({
+    Key? key,
+    required this.showRegisterPage, required Null Function() SignupPage, required Null Function() showRejisterPage,
+  }) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _loginUser() async {
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      _showSnackBar('Please enter email and password');
+      return;
+    }
+
+    if (!email.contains('@') || !email.endsWith('.com')) {
+      _showSnackBar('Invalid email format');
+      return;
+    }
+
+    // Add your database validation logic here to check if the password matches
+
+    try {
+      final UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final User? user = userCredential.user;
+      if (user != null) {
+        _showSnackBar('User signed in successfully: ${user.uid}');
+
+        if (kDebugMode) {
+          print('User signed in successfully: ${user.uid}');
+        }
+
+        // Check if the user is an admin
+        if (user.email == 'admin@gmail.com') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Admin()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MainPage()),
+          );
+        }
+      }
+    } catch (e) {
+      // Handle login errors
+      print('Login error: $e');
+      _showSnackBar('Login failed. Please try again.');
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
-          //padding: const EdgeInsets.symmetric(horizontal: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -53,11 +117,11 @@ class _LoginPageState extends State<LoginPage> {
                         Text(
                           "Login",
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
                         Text(
                           "Login to your account",
                           style: TextStyle(fontSize: 15, color: Colors.grey),
@@ -68,87 +132,60 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Column(
                         children: [
-                          makeinput(label: "Email"),
-                          makeinput(label: "Password", obscureText: true),
+                         
+                          makeInput(
+                              label: "Email", controller: _emailController),
+                          makeInput(
+                              label: "Password",
+                              obscureText: true,
+                              controller: _passwordController),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Container(
-                          padding: const EdgeInsets.only(top: 3, left: 3),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              border: const Border(
-                                bottom: BorderSide(color: Colors.black),
-                                top: BorderSide(color: Colors.black),
-                                left: BorderSide(color: Colors.black),
-                                right: BorderSide(color: Colors.black),
-                              )),
-                          child: MaterialButton(
-                            minWidth: double.infinity,
-                            height: 60,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MainPage()));
-                            },
-                            color: Colors.greenAccent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: const Text(
-                              "User Login",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18),
+                        padding: const EdgeInsets.only(top: 3, left: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: const Border(
+                            bottom: BorderSide(color: Colors.black),
+                            top: BorderSide(color: Colors.black),
+                            left: BorderSide(color: Colors.black),
+                            right: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        child: MaterialButton(
+                          minWidth: double.infinity,
+                          height: 60,
+                          onPressed: _loginUser, // Call the _loginUser method
+                          color: Colors.greenAccent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
                             ),
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: Container(
-                          padding: const EdgeInsets.only(top: 3, left: 3),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              border: const Border(
-                                bottom: BorderSide(color: Colors.black),
-                                top: BorderSide(color: Colors.black),
-                                left: BorderSide(color: Colors.black),
-                                right: BorderSide(color: Colors.black),
-                              )),
-                          child: MaterialButton(
-                            minWidth: double.infinity,
-                            height: 60,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Admin()));
-                            },
-                            color: Colors.greenAccent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: const Text(
-                              "Admin Login",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18),
-                            ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text("Don't have an account?"),
                         GestureDetector(
-                          onTap: () {
-                            const SignupPage();
-                          },
+                          onTap: widget.showRegisterPage,
                           child: const Text(
                             "Sign up",
                             style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 18),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ],
@@ -159,9 +196,11 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 height: MediaQuery.of(context).size.height / 7,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/background.png'),
-                        fit: BoxFit.cover)),
+                  image: DecorationImage(
+                    image: AssetImage('assets/background.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               )
             ],
           ),
@@ -170,19 +209,24 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget makeinput({label, obscureText = false}) {
+  Widget makeInput(
+      {required String label,
+      bool obscureText = false,
+      required TextEditingController controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
           style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: Colors.black87,
+          ),
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(height: 5),
         TextField(
+          controller: controller,
           obscureText: obscureText,
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -194,9 +238,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        const SizedBox(
-          height: 30,
-        ),
+        const SizedBox(height: 30),
       ],
     );
   }

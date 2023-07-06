@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => LoginPage(
                                   SignupPage: () {},
-                                  showRejisterPage: () {},
+                                  showRejisterPage: () {}, showRegisterPage: () {  },
                                 )));
                       },
                       shape: RoundedRectangleBorder(
