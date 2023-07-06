@@ -1,6 +1,5 @@
 import 'package:cinema_new/User/how_many_tickets.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BillingInformation extends StatelessWidget {
@@ -32,7 +31,7 @@ class BillingInformation extends StatelessWidget {
         // Navigate to the next page if user is valid
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HowManyTickets()),
+          MaterialPageRoute(builder: (context) => const HowManyTickets()),
         );
       } else {
         // Show an error message if user is not valid
@@ -129,13 +128,13 @@ class BillingInformation extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   onPressed: () => addData(context),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.greenAccent,
+                    backgroundColor: Colors.greenAccent,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
@@ -148,7 +147,7 @@ class BillingInformation extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),

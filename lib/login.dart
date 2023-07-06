@@ -57,12 +57,12 @@ class _LoginPageState extends State<LoginPage> {
         if (user.email == 'admin@gmail.com') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Admin()),
+            MaterialPageRoute(builder: (context) => const Admin()),
           );
         } else {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MainPage()),
+            MaterialPageRoute(builder: (context) => const MainPage()),
           );
         }
       }
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

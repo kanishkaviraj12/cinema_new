@@ -1,12 +1,7 @@
 import 'package:cinema_new/User/profile_page.dart';
-import 'package:cinema_new/User/reservation_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'Billing_information.dart';
-import 'Payment/Payment.dart';
 import 'consts.dart';
 import 'home_page.dart';
-import 'how_many_tickets.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key); // Fix the constructor

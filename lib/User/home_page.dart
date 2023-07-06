@@ -112,7 +112,8 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: white.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(30),
@@ -136,20 +137,20 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Category',
-                    style: font.copyWith(
-                      color: white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  // Text(
+                  //   'Category',
+                  //   style: font.copyWith(
+                  //     color: white,
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
                   Row(
                     children: [
-                      Text(
-                        'See All',
-                        style: font.copyWith(fontSize: 14, color: orange),
-                      ),
+                      // Text(
+                      //   'See All',
+                      //   style: font.copyWith(fontSize: 14, color: orange),
+                      // ),
                       const Icon(
                         Icons.chevron_right_rounded,
                         color: orange,
@@ -166,13 +167,13 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ...List.generate(
-                    categories.length,
-                    (index) => CategoryHome(
-                      emoticon: categories[index].emoticon,
-                      name: categories[index].name,
-                    ),
-                  )
+                  // ...List.generate(
+                  //   categories.length,
+                  //   (index) => CategoryHome(
+                  //     emoticon: categories[index].emoticon,
+                  //     name: categories[index].name,
+                  //   ),
+                  // )
                 ],
               ),
             ),
@@ -226,7 +227,8 @@ class _HomePageState extends State<HomePage> {
                           );
                         },
                         child: Padding(
-                          padding: EdgeInsets.only(top: 100 - (scale / 1.6 * 100)),
+                          padding:
+                              EdgeInsets.only(top: 100 - (scale / 1.6 * 100)),
                           child: Stack(
                             alignment: AlignmentDirectional.topCenter,
                             children: [
@@ -240,11 +242,13 @@ class _HomePageState extends State<HomePage> {
                                       key: UniqueKey(),
                                       height: 400,
                                       width: 280,
-                                      imageUrl: movies[index % movies.length].poster,
+                                      imageUrl:
+                                          movies[index % movies.length].poster,
                                       errorWidget: (context, url, error) {
                                         return const Icon(Icons.error);
                                       },
-                                      progressIndicatorBuilder: (context, url, progress) {
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) {
                                         return Center(
                                           child: CircularProgressIndicator(
                                             value: progress.progress,
@@ -292,10 +296,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-// const white = Color(0xFFffffff);
-// const black = Color(0xFF1c1c27);
-// const grey = Color(0xFF373741);
-// const orange = Color(0xFFffb43a);
-// const transparent = Colors.transparent;

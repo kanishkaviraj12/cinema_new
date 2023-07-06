@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class HowManyTickets extends StatefulWidget {
-  HowManyTickets({Key? key}) : super(key: key);
+  const HowManyTickets({Key? key}) : super(key: key);
 
   @override
   _HowManyTicketsState createState() => _HowManyTicketsState();
@@ -82,9 +82,9 @@ class _HowManyTicketsState extends State<HowManyTickets> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 onPressed: () {
                   if (fullTicketsController.text.isEmpty ||
@@ -110,14 +110,14 @@ class _HowManyTicketsState extends State<HowManyTickets> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>PaymentApp(),
+                        builder: (context) =>const PaymentApp(),
                       ),
                     );
                     // Add navigation code here
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent,
+                  backgroundColor: Colors.greenAccent,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
@@ -130,7 +130,7 @@ class _HowManyTicketsState extends State<HowManyTickets> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
